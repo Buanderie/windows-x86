@@ -75,14 +75,6 @@ RUN cd /usr/local/bin \
   && ln -s /usr/src/mxe/usr/bin/i686-w64-mingw32.static-cmake cmake \
   && ln -s /usr/src/mxe/usr/bin/i686-w64-mingw32.static-cpack cpack
 
-# Create user "jenkins"
-RUN id jenkins 2>/dev/null || useradd --uid 1000 --create-home jenkins
-
-# Create a non-root user that will perform the actual build
-RUN id build 2>/dev/null || useradd --uid 30000 --create-home build
-RUN echo "build ALL=(ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
-RUN echo "jenkins ALL=(ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
-
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
 ARG IMAGE
@@ -93,8 +85,3 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url=$VCS_URL \
       org.label-schema.schema-version="1.0"
-
-USER build
-WORKDIR /home/build
-CMD "/bin/bash"
-
