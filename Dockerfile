@@ -57,7 +57,7 @@ COPY settings.mk /usr/src/mxe/
 RUN make -j$(nproc)
 
 ENV PATH ${PATH}:/usr/src/mxe/usr/bin
-ENV CROSS_TRIPLE i686-w64-mingw32.static
+ENV CROSS_TRIPLE i686-w64-mingw32.static.posix.sjlj
 ENV AS=/usr/src/mxe/usr/bin/${CROSS_TRIPLE}-as \
     AR=/usr/src/mxe/usr/bin/${CROSS_TRIPLE}-ar \
     CC=/usr/src/mxe/usr/bin/${CROSS_TRIPLE}-gcc \
@@ -68,12 +68,12 @@ ENV AS=/usr/src/mxe/usr/bin/${CROSS_TRIPLE}-as \
 ENV DEFAULT_DOCKCROSS_IMAGE dockcross/windows-x86
 WORKDIR /work
 
-ENV CMAKE_TOOLCHAIN_FILE /usr/src/mxe/usr/i686-w64-mingw32.static/share/cmake/mxe-conf.cmake
+ENV CMAKE_TOOLCHAIN_FILE /usr/src/mxe/usr/i686-w64-mingw32.static.posix.sjlj/share/cmake/mxe-conf.cmake
 RUN echo 'set(CMAKE_CROSSCOMPILING_EMULATOR "/usr/bin/wine")' >> ${CMAKE_TOOLCHAIN_FILE}
 RUN cd /usr/local/bin \
   && rm cmake \
-  && ln -s /usr/src/mxe/usr/bin/i686-w64-mingw32.static-cmake cmake \
-  && ln -s /usr/src/mxe/usr/bin/i686-w64-mingw32.static-cpack cpack
+  && ln -s /usr/src/mxe/usr/bin/i686-w64-mingw32.static.posix.sjlj-cmake cmake \
+  && ln -s /usr/src/mxe/usr/bin/i686-w64-mingw32.static.posix.sjlj-cpack cpack
 
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
